@@ -89,8 +89,3 @@ def add_movie_from_api(username, movie_name):
 
     connection.commit()
 
-
-if __name__ == "__main__":
-    add_movie_from_api("gopika", "Inception")
-    print(get_watchlist("gopika"))
-    connection.close()
