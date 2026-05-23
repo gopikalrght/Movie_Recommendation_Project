@@ -1,4 +1,5 @@
 import sqlite3
+from tmdb_api import search_movies
 
 connection = sqlite3.connect("movies.db")
 
@@ -17,15 +18,14 @@ CREATE TABLE IF NOT EXISTS users (
 
 
 # WATCHLIST TABLE
-
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS watchlist (
     watchlist_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT,
-    movie_title TEXT
+    movie_title TEXT,
+    imdb_id TEXT
 )
 """)
-
 
 # ADD USER
 
@@ -51,30 +51,51 @@ def get_users():
 
 
 # ADD TO WATCHLIST
-
-def add_to_watchlist(username, movie_title):
+def add_to_watchlist(username, movie_title, imdb_id):
 
     cursor.execute(
-        "INSERT INTO watchlist (username, movie_title) VALUES (?, ?)",
-        (username, movie_title)
+        "INSERT INTO watchlist (username, movie_title, imdb_id) VALUES (?, ?, ?)",
+        (username, movie_title, imdb_id)
     )
 
     connection.commit()
 
     print("Movie added to watchlist")
 
-
 # GET WATCHLIST
+def get_watchlist(username):
 
-def get_watchlist():
-
-    cursor.execute("SELECT * FROM watchlist")
+    cursor.execute(
+        "SELECT movie_title, imdb_id FROM watchlist WHERE username=?",
+        (username,)
+    )
 
     return cursor.fetchall()
 
+def add_movie_from_api(username, movie_name):
 
-add_to_watchlist("gopika", "Interstellar")
+    movies = search_movies(movie_name)
 
-print(get_watchlist())
+    if not movies:
+        print("No movies found from API")
+        return
+
+    first_movie = movies[0]
+
+    title = first_movie["title"]
+    imdb_id = first_movie["imdb_id"]
+
+    cursor.execute(
+        "INSERT INTO watchlist (username, movie_title, imdb_id) VALUES (?, ?, ?)",
+        (username, title, imdb_id)
+    )
+
+    connection.commit()
+
+    print("Movie added from API to watchlist")
+
+add_movie_from_api("gopika", "Inception")
+
+print(get_watchlist("gopika"))
 
 connection.close()
