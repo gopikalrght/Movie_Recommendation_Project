@@ -54,13 +54,16 @@ def get_movie_details(imdb_id):
         print("Details Error:", e)
         return {}
 
+if __name__ == "__main__":
 
-# 3. TEST CODE (SAFE WAY)
-movies = search_movies("Batman")
+    movies = search_movies("Batman")
 
-if movies:
-    first_id = movies[0]["imdb_id"]
-    print(get_movie_details("tt0372784"))
+    if movies:
 
-else:
-    print("No movies found or API failed")
+        first_id = movies[0]["imdb_id"]
+
+        print(get_movie_details(first_id))
+
+    else:
+
+        print("No movies found or API failed")

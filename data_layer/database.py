@@ -38,8 +38,6 @@ def add_user(username, password):
 
     connection.commit()
 
-    print("User added successfully")
-
 
 # GET USERS
 
@@ -60,7 +58,6 @@ def add_to_watchlist(username, movie_title, imdb_id):
 
     connection.commit()
 
-    print("Movie added to watchlist")
 
 # GET WATCHLIST
 def get_watchlist(username):
@@ -92,10 +89,8 @@ def add_movie_from_api(username, movie_name):
 
     connection.commit()
 
-    print("Movie added from API to watchlist")
 
-add_movie_from_api("gopika", "Inception")
-
-print(get_watchlist("gopika"))
-
-connection.close()
+if __name__ == "__main__":
+    add_movie_from_api("gopika", "Inception")
+    print(get_watchlist("gopika"))
+    connection.close()
