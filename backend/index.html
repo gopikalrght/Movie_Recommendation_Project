@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Movie Explorer</title>
+</head>
+<body>
+    <h1>Movie Explorer</h1>
+
+    <div style="margin: 20px 0;">
+        <input type="text" id="searchInput" placeholder="Search for a movie...">
+        <button onclick="searchMovie()">Search</button>
+    </div>
+
+    <button onclick="showMyWatchlist()">Show My Watchlist</button>
+    
+    <div id="movie-list"></div>
+    <div id="watchlist-display"></div>
+
+    <script>
+        // 1. Keep your existing searchMovie() function here...
+        function searchMovie() {
+            // ... (your existing search code)
+        }
+
+        // 2. Keep your existing addToWatchlist() function here...
+        function addToWatchlist(title, poster) {
+            // ... (your existing add code)
+        }
+
+        // 3. ADD THIS NEW FUNCTION BELOW THE OTHERS
+        function showMyWatchlist() {
+            fetch('http://127.0.0.1:5000/watchlist/get')
+                .then(res => res.json())
+                .then(data => {
+                    const display = document.getElementById('watchlist-display');
+                    display.innerHTML = '<h2>My Watchlist:</h2>'; 
+                    
+                    if (data.length === 0) {
+                        display.innerHTML += '<p>Your watchlist is currently empty.</p>';
+                    } else {
+                        data.forEach(movie => {
+                            display.innerHTML += `
+                                <div style="margin-bottom: 10px;">
+                                    <strong>${movie.title}</strong>
+                                </div>
+                            `;
+                        });
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
