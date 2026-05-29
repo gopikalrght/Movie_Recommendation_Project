@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Movie Recommender</title>
+    <meta charset="UTF-8">
+    <title>My Movie Watchlist</title>
 </head>
 <body>
-    <h1>Welcome to My Movie Recommendation Project!</h1>
-    <p>The server is working perfectly.</p>
+    <h1>My Movie Watchlist</h1>
+    
+    <input type="text" id="title" placeholder="Movie Title">
+    <input type="number" id="year" placeholder="Year">
+    <button onclick="addMovie()">Add to Watchlist</button>
+
+    <ul id="watchlist"></ul>
+
+    <script src="script.js"></script>
 </body>
 </html>

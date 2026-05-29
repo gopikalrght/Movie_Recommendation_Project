@@ -1,53 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Movie Explorer</title>
+    <meta charset="UTF-8">
+    <title>My Movie Watchlist</title>
 </head>
 <body>
-    <h1>Movie Explorer</h1>
-
-    <div style="margin: 20px 0;">
-        <input type="text" id="searchInput" placeholder="Search for a movie...">
-        <button onclick="searchMovie()">Search</button>
-    </div>
-
-    <button onclick="showMyWatchlist()">Show My Watchlist</button>
+    <h1>My Movie Watchlist</h1>
     
-    <div id="movie-list"></div>
-    <div id="watchlist-display"></div>
+    <input type="text" id="movieName" placeholder="Enter movie name">
+    <input type="text" id="year" placeholder="Enter year">
+    <button onclick="addMovie()">Add to Watchlist</button>
 
-    <script>
-        // 1. Keep your existing searchMovie() function here...
-        function searchMovie() {
-            // ... (your existing search code)
-        }
+    <div id="movieList"></div>
 
-        // 2. Keep your existing addToWatchlist() function here...
-        function addToWatchlist(title, poster) {
-            // ... (your existing add code)
-        }
-
-        // 3. ADD THIS NEW FUNCTION BELOW THE OTHERS
-        function showMyWatchlist() {
-            fetch('http://127.0.0.1:5000/watchlist/get')
-                .then(res => res.json())
-                .then(data => {
-                    const display = document.getElementById('watchlist-display');
-                    display.innerHTML = '<h2>My Watchlist:</h2>'; 
-                    
-                    if (data.length === 0) {
-                        display.innerHTML += '<p>Your watchlist is currently empty.</p>';
-                    } else {
-                        data.forEach(movie => {
-                            display.innerHTML += `
-                                <div style="margin-bottom: 10px;">
-                                    <strong>${movie.title}</strong>
-                                </div>
-                            `;
-                        });
-                    }
-                });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
