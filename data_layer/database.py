@@ -3,23 +3,36 @@ import sqlite3
 def init_db():
     conn = sqlite3.connect('movies.db')
     cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS watchlist 
-                      (id INTEGER PRIMARY KEY, title TEXT, year TEXT)''')
+    # Ensure the table exists with both title and year
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS watchlist (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            year INTEGER
+        )
+    ''')
     conn.commit()
     conn.close()
 
 def add_to_watchlist(movie_data):
+    # movie_data is the dictionary from server.py: {"title": "...", "year": ...}
     conn = sqlite3.connect('movies.db')
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO watchlist (title, year) VALUES (?, ?)", 
-                   (movie_data['title'], movie_data['year']))
+    
+    # We use .get() so if 'year' is missing, it defaults to None/NULL
+    title = movie_data.get('title')
+    year = movie_data.get('year')
+    
+    cursor.execute("INSERT INTO watchlist (title, year) VALUES (?, ?)", (title, year))
     conn.commit()
     conn.close()
 
 def get_watchlist():
     conn = sqlite3.connect('movies.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM watchlist")
+    cursor.execute("SELECT title, year FROM watchlist")
     rows = cursor.fetchall()
     conn.close()
-    return [{"id": r[0], "title": r[1], "year": r[2]} for r in rows]
+    
+    # Convert rows to a list of dictionaries for easier JSON response
+    return [{"title": row[0], "year": row[1]} for row in rows]
