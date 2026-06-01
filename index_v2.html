@@ -1,24 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Recommendation Watchlist</title>
+    <title>Movie Watchlist</title>
 </head>
 <body>
-    <h1>My Movie Watchlist</h1>
-    
-    <div>
-        <label for="movieName">Movie Name:</label>
-        <input type="text" id="movieName" placeholder="e.g., Inception">
-    </div>
-    <br>
-    <div>
-        <label for="year">Year:</label>
-        <input type="number" id="year" placeholder="e.g., 2010">
-    </div>
-    <br>
-    <button onclick="addMovie()">Add to Watchlist</button>
+    <h2>Add Movie to Watchlist</h2>
+    <input type="text" id="movieTitle" placeholder="Movie Title">
+    <input type="number" id="movieYear" placeholder="Year">
+    <button onclick="addMovie()">Add Movie</button>
+
+    <h3>My Watchlist</h3>
+    <ul id="watchlist"></ul>
 
     <script src="script.js"></script>
 </body>
