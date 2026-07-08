@@ -1,18 +1,25 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Movie Watchlist</title>
+    <title>My Movie Watchlist</title>
 </head>
 <body>
-    <h2>Add Movie to Watchlist</h2>
-    <input type="text" id="movieTitle" placeholder="Movie Title">
-    <input type="number" id="movieYear" placeholder="Year">
-    <button onclick="addMovie()">Add Movie</button>
 
-    <h3>My Watchlist</h3>
-    <ul id="watchlist"></ul>
+    <h1>My Movie Watchlist</h1>
+
+    <div>
+        <input type="text" id="searchBar" placeholder="Search for a movie...">
+        <button onclick="searchMovie()">Search</button>
+    </div>
+
+    <div id="searchResults"></div>
+
+    <hr>
+
+    <h2>My List</h2>
+    <ul id="watchlist">
+        </ul>
 
     <script src="script.js"></script>
 </body>
