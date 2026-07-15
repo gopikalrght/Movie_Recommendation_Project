@@ -2,25 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Movie Watchlist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
 </head>
+
 <body>
 
-    <h1>My Movie Watchlist</h1>
+    <h1>🎬 Movie Recommendation System</h1>
 
     <div>
-        <input type="text" id="searchBar" placeholder="Search for a movie...">
+        <input
+            type="text"
+            id="searchBar"
+            placeholder="Search for a movie..."
+        >
         <button onclick="searchMovie()">Search</button>
     </div>
+
+    <br>
 
     <div id="searchResults"></div>
 
     <hr>
 
-    <h2>My List</h2>
-    <ul id="watchlist">
-        </ul>
+    <h2>📌 My Watchlist</h2>
+
+    <ul id="watchlist"></ul>
 
     <script src="script.js"></script>
+
 </body>
 </html>

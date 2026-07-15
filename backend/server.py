@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from .data_layer.tmdb_api import search_movies
+from .data_layer.omdb_api import search_movies
 from .data_layer.database import get_watchlist_from_db, add_to_watchlist_db, remove_from_watchlist_db
 
 app = Flask(__name__)

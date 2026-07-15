@@ -38,3 +38,7 @@ def remove_from_watchlist_db(title):
     conn.execute("DELETE FROM watchlist WHERE title = ?", (title,))
     conn.commit()
     conn.close()
+
+if __name__ == "__main__":
+    init_db()
+    print("Database initialized successfully!")

@@ -1,7 +1,18 @@
+# Python virtual environment
 venv/
+
+# Python cache
 __pycache__/
 *.pyc
+
+# Environment variables (API keys)
+backend/.env
+
+# Temporary secret files
+backend/keyyyy.txt
+
+# SQLite databases (keep local only)
 *.db
-.DS_Store 
-backend/keyyyy.txt 
-backend/.env 
+
+# macOS system file
+.DS_Store
