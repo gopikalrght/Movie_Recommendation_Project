@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Python virtual environment
 venv/
 
@@ -16,3 +17,5 @@ backend/keyyyy.txt
 
 # macOS system file
 .DS_Store
+=======
+>>>>>>> Stashed changes
