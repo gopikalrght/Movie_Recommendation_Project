@@ -1,59 +1,30 @@
 import requests
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+OMDB_API_KEY = "your_omdb_api_key_here"  # Make sure this is your active OMDb API key
 
-API_KEY =os.getenv("OMDB_API_KEY")
-
-# 1. SEARCH MOVIES (by name)
-def search_movies(movie_name):
-
-    try:
-        url = f"http://www.omdbapi.com/?apikey={API_KEY}&s={movie_name}"
-
-        response = requests.get(url, timeout=10)
-        data = response.json()
-
-        movies = []
-
-        if data.get("Response") == "True":
-
-            for item in data.get("Search", []):
-
-                movies.append({
-                    "title": item.get("Title"),
-                    "year": item.get("Year"),
-                    "imdb_id": item.get("imdbID"),
-                    "poster": item.get("Poster")
-                })
-
-        return movies
-
-    except Exception as e:
-        print("Search Error:", e)
-        return []
-
-
-# 2. GET FULL MOVIE DETAILS (by imdb_id)
-def get_movie_details(imdb_id):
-
-    try:
-        url = f"http://www.omdbapi.com/?apikey={API_KEY}&i={imdb_id}"
-
-        response = requests.get(url, timeout=10)
-        data = response.json()
-
-        return {
-            "title": data.get("Title"),
-            "year": data.get("Year"),
-            "genre": data.get("Genre"),
-            "rating": data.get("imdbRating"),
-            "plot": data.get("Plot"),
-            "actors": data.get("Actors"),
-            "poster": data.get("Poster")
-        }
-
-    except Exception as e:
-        print("Details Error:", e)
-        return {}
+def search_movies(query):
+    # Using 't' parameter for precise title matching or switch to 's' if handling lists, 
+    # but 't' returns the detailed dictionary requested.
+    url = f"http://www.omdbapi.com/?apikey={OMDB_API_KEY}&t={query}"
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return {"error": "Failed to connect to OMDb API"}
+    
+    data = response.json()
+    
+    if data.get("Response") == "False":
+        return {"error": data.get("Error", "Movie not found")}
+        
+    # Return complete JSON containing all requested fields
+    return {
+        "title": data.get("Title"),
+        "year": data.get("Year"),
+        "poster": data.get("Poster"),
+        "plot": data.get("Plot"),
+        "imdb_rating": data.get("imdbRating"),
+        "genre": data.get("Genre"),
+        "director": data.get("Director"),
+        "actors": data.get("Actors")
+    }
