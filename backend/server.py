@@ -12,7 +12,6 @@ init_db()
 
 @app.route('/search', methods=['GET'])
 def search_movie():
-    try:
         query = request.args.get('query')
         if not query:
             return jsonify({"error": "Query parameter is required"}), 400
@@ -22,8 +21,7 @@ def search_movie():
             return jsonify(result), 404
             
         return jsonify(result), 200
-    except Exception as e:
-        return jsonify({"error": "An error occurred during search", "details": str(e)}), 500
+    
 
 @app.route('/watchlist', methods=['GET'])
 def get_watchlist():
@@ -52,6 +50,8 @@ def add_watchlist():
         add_movie_db(title, year, poster)
         return jsonify({"message": "Movie added successfully"}), 201
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return jsonify({"error": "Failed to add movie", "details": str(e)}), 500
 
 @app.route('/watchlist/<string:title>', methods=['DELETE'])

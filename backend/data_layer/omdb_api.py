@@ -17,15 +17,15 @@ def search_movies(query):
         
         # Check if response is successful
         if response.status_code == 401:
-            return {"error": "Failed with status code 401"}, 401
+            return {"error": "Failed with status code 401"}
             
         data = response.json()
         
         # OMDb returns {"Response": "False", "Error": "Movie not found!"} if it fails
         if data.get("Response") == "False":
-            return {"error": data.get("Error", "Movie not found")}, 404
+            return {"error": data.get("Error", "Movie not found")}
             
-        return data, 200
+        return data
 
     except requests.exceptions.RequestException as e:
-        return {"error": str(e)}, 500
+        return {"error": str(e)}
