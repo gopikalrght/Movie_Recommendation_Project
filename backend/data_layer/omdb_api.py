@@ -1,31 +1,31 @@
 import requests
+import os
 
-# Replace with your actual OMDb API key
-OMDB_API_KEY = "29edede1"
-OMDB_BASE_URL = "http://www.omdbapi.com/"
+# You can replace this with your actual OMDb API key if needed
+OMDB_API_KEY = os.getenv("OMDB_API_KEY", "29edede1")
 
 def search_movies(query):
-    """
-    Searches for a movie using the OMDb API and returns complete movie details in JSON.
-    """
-    try:
-        params = {
-            "apikey": OMDB_API_KEY,
-            "t": query
-        }
-        response = requests.get(OMDB_BASE_URL, params=params)
+    url = f"https://www.omdbapi.com/?apikey={OMDB_API_KEY}&s={query}"
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return {"error": "Failed to connect to OMDb API"}, 500
         
-        # Check if response is successful
-        if response.status_code == 401:
-            return {"error": "Failed with status code 401"}
-            
-        data = response.json()
-        
-        # OMDb returns {"Response": "False", "Error": "Movie not found!"} if it fails
-        if data.get("Response") == "False":
-            return {"error": data.get("Error", "Movie not found")}
-            
-        return data
+    data = response.json()
+    if data.get("Response") == "True":
+        return data.get("Search", []), 200
+    else:
+        return {"error": data.get("Error", "Movies not found")}, 404
 
-    except requests.exceptions.RequestException as e:
-        return {"error": str(e)}
+def get_movie_details(imdb_id):
+    url = f"https://www.omdbapi.com/?apikey={OMDB_API_KEY}&i={imdb_id}"
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return {"error": "Failed to connect to OMDb API"}, 500
+        
+    data = response.json()
+    if data.get("Response") == "True":
+        return data, 200
+    else:
+        return {"error": data.get("Error", "Movie details not found")}, 404
