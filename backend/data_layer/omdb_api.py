@@ -1,31 +1,86 @@
-import requests
 import os
+import requests
+from dotenv import load_dotenv
 
-# You can replace this with your actual OMDb API key if needed
-OMDB_API_KEY = os.getenv("OMDB_API_KEY", "29edede1")
+# Load variables from .env
+load_dotenv()
+
+OMDB_API_KEY = os.getenv("OMDB_API_KEY")
+OMDB_BASE_URL = "https://www.omdbapi.com/"
+
 
 def search_movies(query):
-    url = f"https://www.omdbapi.com/?apikey={OMDB_API_KEY}&s={query}"
-    response = requests.get(url)
-    
-    if response.status_code != 200:
-        return {"error": "Failed to connect to OMDb API"}, 500
-        
-    data = response.json()
-    if data.get("Response") == "True":
-        return data.get("Search", []), 200
-    else:
-        return {"error": data.get("Error", "Movies not found")}, 404
+    """
+    Search OMDb for movies matching the user's query.
+    Returns a list of search-result movies.
+    """
+
+    try:
+        params = {
+            "apikey": OMDB_API_KEY,
+            "s": query,
+            "type": "movie"
+        }
+
+        response = requests.get(
+            OMDB_BASE_URL,
+            params=params,
+            timeout=10
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        if data.get("Response") == "False":
+            return {
+                "error": data.get(
+                    "Error",
+                    "Movie not found!"
+                )
+            }
+
+        return data.get("Search", [])
+
+    except requests.exceptions.RequestException as e:
+        return {
+            "error": str(e)
+        }
+
 
 def get_movie_details(imdb_id):
-    url = f"https://www.omdbapi.com/?apikey={OMDB_API_KEY}&i={imdb_id}"
-    response = requests.get(url)
-    
-    if response.status_code != 200:
-        return {"error": "Failed to connect to OMDb API"}, 500
-        
-    data = response.json()
-    if data.get("Response") == "True":
-        return data, 200
-    else:
-        return {"error": data.get("Error", "Movie details not found")}, 404
+    """
+    Get complete movie details using IMDb ID.
+    """
+
+    try:
+        params = {
+            "apikey": OMDB_API_KEY,
+            "i": imdb_id,
+            "plot": "full"
+        }
+
+        response = requests.get(
+            OMDB_BASE_URL,
+            params=params,
+            timeout=10
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        if data.get("Response") == "False":
+            return {
+                "error": data.get(
+                    "Error",
+                    "Movie details not found!"
+                )
+            }
+
+        return data
+
+    except requests.exceptions.RequestException as e:
+        return {
+            "error": str(e)
+        }
