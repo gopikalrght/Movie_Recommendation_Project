@@ -242,12 +242,19 @@ if st.session_state.search_results:
                     key=f"details_{imdb_id}_{get_title(movie)}"
                 ):
 
-                    st.session_state.selected_movie = movie
+                    imdb_id = get_imdb_id(movie)
 
-                    st.session_state.recommendations = (
-                        load_recommendations(
-                            get_title(movie)
-                        )
+                    details = requests.get(
+                       f"{BACKEND_URL}/movie/{imdb_id}"
+                    )
+
+                    if details.status_code == 200:
+                        st.session_state.selected_movie = details.json()
+                    else:
+                        st.session_state.selected_movie = movie
+
+                    st.session_state.recommendations = load_recommendations(
+                        get_title(st.session_state.selected_movie)
                     )
 
                     st.rerun()
@@ -416,14 +423,19 @@ if movie:
                         key=f"recommend_{imdb_id}_{get_title(recommendation)}"
                     ):
 
-                        st.session_state.selected_movie = (
-                            recommendation
+                        imdb_id = get_imdb_id(recommendation)
+
+                        details = requests.get(
+                            f"{BACKEND_URL}/movie/{imdb_id}"
                         )
 
-                        st.session_state.recommendations = (
-                            load_recommendations(
-                                get_title(recommendation)
-                            )
+                        if details.status_code == 200:
+                            st.session_state.selected_movie = details.json()
+                        else:
+                            st.session_state.selected_movie = recommendation
+
+                        st.session_state.recommendations = load_recommendations(
+                            get_title(st.session_state.selected_movie)
                         )
 
                         st.rerun()
