@@ -280,7 +280,7 @@ if movie:
 
     with col1:
 
-        poster = get_poster(movie)`
+        poster = get_poster(movie)
 
         if poster:
             st.image(
